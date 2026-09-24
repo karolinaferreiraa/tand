@@ -1,66 +1,219 @@
-@import 'tailwindcss';
-@import '../../vendor/livewire/flux/dist/flux.css';
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
-@source '../views';
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
-@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
-
-@custom-variant dark (&:where(.dark, .dark *));
-
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-
-    --color-zinc-50: #fafafa;
-    --color-zinc-100: #f5f5f5;
-    --color-zinc-200: #e5e5e5;
-    --color-zinc-300: #d4d4d4;
-    --color-zinc-400: #a3a3a3;
-    --color-zinc-500: #737373;
-    --color-zinc-600: #525252;
-    --color-zinc-700: #404040;
-    --color-zinc-800: #262626;
-    --color-zinc-900: #171717;
-    --color-zinc-950: #0a0a0a;
-
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
-    --color-accent-foreground: var(--color-white);
+:root {
+  --verde-escuro: #163f3a;
+  --verde-medio: #1f4a44;
+  --verde-claro: #2f6b60;
+  --creme: #fdfbf6;
+  --marrom-titulo: #4a2e18;
+  --texto-cinza: #8a8a8a;
+  --borda: #e6e6e2;
 }
 
-@layer theme {
-    .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
-    }
+* { box-sizing: border-box; }
+
+body.viveiro-bg {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  background: var(--verde-escuro);
 }
 
-@layer base {
-
-    *,
-    ::after,
-    ::before,
-    ::backdrop,
-    ::file-selector-button {
-        border-color: var(--color-gray-200, currentColor);
-    }
+/* ---------- LAYOUT SPLIT SCREEN ---------- */
+.viveiro-split {
+  display: flex;
+  min-height: 100vh;
 }
 
-[data-flux-field]:not(ui-radio, ui-checkbox) {
-    @apply grid gap-2;
+.viveiro-branding {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 30% 20%, var(--verde-claro), var(--verde-escuro) 70%);
+  color: #fff;
+  text-align: center;
+  padding: 2rem;
 }
 
-[data-flux-label] {
-    @apply  !mb-0 !leading-tight;
+.viveiro-branding .eyebrow {
+  letter-spacing: .15em;
+  font-size: .8rem;
+  color: #cfe3dc;
+  margin-bottom: .5rem;
 }
 
-input:focus[data-flux-control],
-textarea:focus[data-flux-control],
-select:focus[data-flux-control] {
-    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+.viveiro-branding h1.logo {
+  font-family: 'Fraunces', serif;
+  font-size: 4rem;
+  margin: 0;
 }
 
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
+.viveiro-form-side {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--creme);
+  position: relative;
+}
+
+/* ---------- CARD (usado quando a tela é só o form, sem split) ---------- */
+.viveiro-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--creme);
+  border-radius: 24px;
+  padding: 2.5rem 2.5rem;
+  position: relative;
+}
+
+.viveiro-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid var(--borda);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  text-decoration: none;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+}
+.viveiro-close:hover { color: var(--verde-escuro); }
+
+.viveiro-card h1 {
+  font-family: 'Fraunces', serif;
+  color: var(--marrom-titulo);
+  font-size: 1.9rem;
+  margin: 0 0 .25rem;
+}
+
+.viveiro-card p.subtitle {
+  color: var(--texto-cinza);
+  margin: 0 0 1.75rem;
+  font-size: .95rem;
+}
+
+/* ---------- CAMPOS COM ÍCONE ---------- */
+.viveiro-field { margin-bottom: 1.1rem; }
+
+.viveiro-field label {
+  display: block;
+  font-size: .85rem;
+  font-weight: 600;
+  color: #3a3a3a;
+  margin-bottom: .4rem;
+}
+
+.viveiro-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.viveiro-input-wrap svg {
+  position: absolute;
+  left: 14px;
+  width: 16px;
+  height: 16px;
+  color: var(--verde-medio);
+  pointer-events: none;
+}
+
+.viveiro-input-wrap input {
+  width: 100%;
+  padding: .85rem 1rem .85rem 2.6rem;
+  border-radius: 10px;
+  border: 1px solid var(--borda);
+  background: #f6f6f3;
+  font-size: .95rem;
+  transition: border-color .15s ease, background .15s ease;
+}
+
+.viveiro-input-wrap input:focus {
+  outline: none;
+  border-color: var(--verde-claro);
+  background: #fff;
+}
+
+.viveiro-toggle-eye {
+  position: absolute;
+  right: 14px;
+  width: 18px;
+  height: 18px;
+  color: #999;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.viveiro-toggle-eye:hover { color: var(--verde-medio); }
+
+/* ---------- BOTÃO ---------- */
+.viveiro-btn {
+  width: 100%;
+  padding: .95rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--verde-medio);
+  color: #fff;
+  font-weight: 700;
+  font-size: .9rem;
+  letter-spacing: .06em;
+  cursor: pointer;
+  transition: background .2s ease, transform .1s ease;
+  margin-top: .5rem;
+}
+.viveiro-btn:hover { background: var(--verde-claro); }
+.viveiro-btn:active { transform: scale(.98); }
+
+.viveiro-btn-outline {
+  background: #fff;
+  color: var(--verde-escuro);
+}
+.viveiro-btn-outline:hover { background: #f0f0f0; }
+
+/* ---------- LINKS ---------- */
+.viveiro-link {
+  text-align: center;
+  margin-top: 1.25rem;
+  font-size: .88rem;
+  color: var(--texto-cinza);
+}
+.viveiro-link a {
+  color: var(--verde-medio);
+  font-weight: 600;
+  text-decoration: none;
+}
+.viveiro-link a:hover { text-decoration: underline; }
+
+.viveiro-link-light {
+  color: #dfe8e3;
+}
+.viveiro-link-light a { color: #fff; }
+
+.viveiro-error {
+  background: #fdecec;
+  border: 1px solid #f3c2c2;
+  color: #b00020;
+  font-size: .85rem;
+  padding: .6rem .9rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* ---------- RESPONSIVO ---------- */
+@media (max-width: 900px) {
+  .viveiro-split { flex-direction: column; }
+  .viveiro-branding { padding: 3rem 2rem; }
+  .viveiro-branding h1.logo { font-size: 2.8rem; }
+}
