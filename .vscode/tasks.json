@@ -1,0 +1,79 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Prepare and build Viveiro app",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location 'C:\\Users\\karol\\OneDrive\\Documentos\\tand\\sistema-controle-tand'; $cache = Join-Path $env:TEMP 'tand-laravel-cache'; New-Item -ItemType Directory -Force $cache | Out-Null; $env:APP_PACKAGES_CACHE = Join-Path $cache 'packages.php'; $env:APP_SERVICES_CACHE = Join-Path $cache 'services.php'; if (-not (Test-Path '.env')) { Copy-Item '.env.example' '.env' }; if (-not (Test-Path 'database\\database.sqlite')) { New-Item -ItemType File 'database\\database.sqlite' | Out-Null }; php artisan key:generate; if (-not $?) { exit 1 }; php artisan migrate --force; if (-not $?) { exit 1 }; npm ci; if (-not $?) { exit 1 }; npm run build; if (-not $?) { exit 1 }"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Initialize Viveiro database",
+			"type": "shell",
+			"command": "cmd.exe",
+			"args": [
+				"/c",
+				"if not exist \"%TEMP%\\tand-laravel-cache\" mkdir \"%TEMP%\\tand-laravel-cache\" & set APP_PACKAGES_CACHE=%TEMP%\\tand-laravel-cache\\packages.php & set APP_SERVICES_CACHE=%TEMP%\\tand-laravel-cache\\services.php & cd /d C:\\Users\\karol\\OneDrive\\Documentos\\tand\\sistema-controle-tand & if not exist .env copy .env.example .env & if not exist database\\database.sqlite type nul > database\\database.sqlite & php artisan key:generate & php artisan migrate --force"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Prepare Laravel environment",
+			"type": "shell",
+			"command": "cmd.exe",
+			"args": [
+				"/c",
+				"set APP_PACKAGES_CACHE=\\Users\\karol\\AppData\\Local\\Temp\\tand-laravel-cache\\packages.php&&set APP_SERVICES_CACHE=\\Users\\karol\\AppData\\Local\\Temp\\tand-laravel-cache\\services.php&&cd /d C:\\Users\\karol\\OneDrive\\Documentos\\tand\\sistema-controle-tand&&php artisan key:generate&&php artisan migrate --force"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Inspect PHP SQLite extension",
+			"type": "shell",
+			"command": "php",
+			"args": [
+				"-m"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Locate SQLite PHP extension",
+			"type": "shell",
+			"command": "php",
+			"args": [
+				"--ini"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Install and build Viveiro frontend",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"--prefix",
+				"sistema-controle-tand",
+				"ci"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}

@@ -195,6 +195,11 @@ body.viveiro-bg {
   text-decoration: none;
 }
 .viveiro-link a:hover { text-decoration: underline; }
+.viveiro-login-options { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin: -.25rem 0 .4rem; color: #777; font-size: .75rem; }
+.viveiro-login-options label { display: inline-flex; align-items: center; gap: .35rem; }
+.viveiro-login-options input { accent-color: var(--verde-medio); }
+.viveiro-login-options a { color: var(--verde-medio); text-decoration: none; }
+.viveiro-login-options a:hover { text-decoration: underline; }
 
 .viveiro-link-light {
   color: #dfe8e3;
@@ -216,4 +221,244 @@ body.viveiro-bg {
   .viveiro-split { flex-direction: column; }
   .viveiro-branding { padding: 3rem 2rem; }
   .viveiro-branding h1.logo { font-size: 2.8rem; }
+}
+
+/* ---------- APLICACAO ---------- */
+.viveiro-app-body {
+  margin: 0;
+  min-height: 100vh;
+  background: #f5f7f5;
+  color: #23332f;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.viveiro-app { min-height: 100vh; }
+
+.viveiro-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 20;
+  display: flex;
+  width: 248px;
+  flex-direction: column;
+  padding: 2rem 1.25rem 1.25rem;
+  background: #153f39;
+  color: #fff;
+}
+
+.viveiro-sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin: 0 0 3.25rem .4rem;
+  color: #fff;
+  font-family: 'Fraunces', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-decoration: none;
+}
+
+.viveiro-brand-mark {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.55);
+  border-radius: 50%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+}
+
+.viveiro-nav-label, .viveiro-eyebrow, .viveiro-topbar-kicker {
+  margin: 0 0 .8rem .7rem;
+  color: #91aaa2;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+.viveiro-nav { display: grid; gap: .35rem; }
+
+.viveiro-nav a {
+  display: flex;
+  min-height: 46px;
+  align-items: center;
+  gap: .85rem;
+  padding: .7rem .8rem;
+  border-radius: 10px;
+  color: #d3e2dc;
+  font-size: .9rem;
+  text-decoration: none;
+  transition: background .15s ease, color .15s ease;
+}
+
+.viveiro-nav a span { width: 20px; color: #a4c0b5; font-size: 1.15rem; text-align: center; }
+.viveiro-nav a:hover, .viveiro-nav a.active { background: #285d52; color: #fff; }
+.viveiro-nav a.active span { color: #fff; }
+
+.viveiro-sidebar-footer { display: grid; gap: .35rem; margin-top: auto; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,.14); }
+.viveiro-sidebar-footer a, .viveiro-sidebar-footer button { padding: .65rem .8rem; border: 0; background: none; color: #d3e2dc; font: inherit; text-align: left; text-decoration: none; cursor: pointer; }
+.viveiro-sidebar-footer a:hover, .viveiro-sidebar-footer button:hover { color: #fff; }
+
+.viveiro-main { min-height: 100vh; margin-left: 248px; }
+.viveiro-topbar { display: flex; min-height: 82px; align-items: center; justify-content: space-between; gap: 1.5rem; padding: 1rem 3.5%; border-bottom: 1px solid #e8ece8; background: #fff; }
+.viveiro-topbar-kicker { margin: 0 0 .18rem; color: #82948d; }
+.viveiro-topbar-user { margin: 0; color: #263a34; font-size: .94rem; font-weight: 600; }
+.viveiro-search { display: flex; width: min(390px, 42%); align-items: center; border: 1px solid #e3e9e4; border-radius: 999px; background: #f8faf8; }
+.viveiro-search input { width: 100%; padding: .7rem 1rem; border: 0; outline: 0; background: transparent; color: #23332f; font: inherit; }
+.viveiro-search button { margin-right: .4rem; width: 36px; height: 36px; border: 0; border-radius: 50%; background: #e8f0eb; color: #1d5147; font-size: 1.35rem; cursor: pointer; }
+.viveiro-profile-link { color: #34574e; font-size: .88rem; font-weight: 600; text-decoration: none; }
+.viveiro-profile-link:hover { color: #163f3a; text-decoration: underline; }
+.viveiro-page-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 2rem 3.5% 1.25rem; }
+.viveiro-page-heading .viveiro-eyebrow { margin-left: 0; color: #719187; }
+.viveiro-heading { margin: 0; color: #283d35; font-family: 'Fraunces', serif; font-size: clamp(1.7rem, 3vw, 2.15rem); line-height: 1.15; }
+.viveiro-subheading { margin: .55rem 0 0; color: #7a8a82; font-size: .95rem; }
+.viveiro-content { padding: .5rem 3.5% 3rem; }
+.viveiro-eyebrow a { color: inherit; text-decoration: none; }
+
+.viveiro-stat-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+.viveiro-stat-card, .viveiro-detail-card { position: relative; min-height: 140px; padding: 1.2rem 1.35rem; border: 1px solid #e8ede8; border-radius: 15px; background: #fff; box-shadow: 0 6px 20px rgba(27,57,44,.035); }
+.viveiro-stat-card p { margin: 0 0 .7rem; color: #7b8a83; font-size: .9rem; }
+.viveiro-stat-card strong { color: #2a493d; font-size: 2rem; }
+.viveiro-stat-icon { position: absolute; top: 1rem; right: 1rem; display: grid; width: 38px; height: 38px; place-items: center; border-radius: 12px; background: #e9f4ed; color: #377a57; font-size: 1.25rem; }
+.viveiro-stat-card.is-warning .viveiro-stat-icon { background: #fff3dc; color: #bb8525; }
+.viveiro-stat-card.is-critical .viveiro-stat-icon { background: #fde9e5; color: #c45043; }
+
+.viveiro-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 0 0 1rem; }
+.viveiro-section-heading h2, .viveiro-form-section h2 { margin: 0; color: #31463d; font-family: 'Fraunces', serif; font-size: 1.3rem; }
+.viveiro-section-heading p, .viveiro-form-hint { margin: .35rem 0 0; color: #84928b; font-size: .87rem; }
+.viveiro-button { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; gap: .4rem; padding: .65rem 1rem; border: 1px solid transparent; border-radius: 999px; font-size: .84rem; font-weight: 700; text-decoration: none; cursor: pointer; transition: background .15s ease, transform .15s ease; }
+.viveiro-button:hover { transform: translateY(-1px); }
+.viveiro-button-primary { background: #1d5147; color: #fff; }
+.viveiro-button-primary:hover { background: #2f6b60; }
+.viveiro-button-muted { border-color: #dfe7e1; background: #fff; color: #35584c; }
+.viveiro-button-muted:hover { background: #f4f8f4; }
+
+.viveiro-tank-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+.viveiro-tank-card { display: block; min-width: 0; padding: 1.15rem; border: 1px solid #e6ece6; border-radius: 15px; background: #fff; color: inherit; text-decoration: none; box-shadow: 0 5px 18px rgba(27,57,44,.035); transition: transform .15s ease, box-shadow .15s ease; }
+.viveiro-tank-card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(27,57,44,.08); }
+.viveiro-tank-card.status-critico { border-color: #f1d0ca; }
+.viveiro-tank-card-top { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+.viveiro-tank-name { overflow: hidden; color: #2e463c; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.viveiro-status { display: inline-flex; align-items: center; padding: .28rem .55rem; border-radius: 999px; font-size: .68rem; font-weight: 700; white-space: nowrap; }
+.viveiro-status.status-normal { background: #e6f4e9; color: #34814d; }
+.viveiro-status.status-atencao { background: #fff2d8; color: #a26d0d; }
+.viveiro-status.status-critico { background: #fde8e5; color: #bb4538; }
+.viveiro-status.status-sem-leitura { background: #edf0ef; color: #687870; }
+.viveiro-temperature { margin: 1.2rem 0 .25rem; color: #254a3b; font-size: 2.25rem; font-weight: 600; letter-spacing: -.04em; }
+.viveiro-temperature span { margin-left: .2rem; font-size: 1rem; }
+.viveiro-tank-meta { margin: 0; color: #839087; font-size: .78rem; }
+.viveiro-card-link { display: flex; justify-content: space-between; margin-top: 1.05rem; padding-top: .75rem; border-top: 1px solid #edf0ed; color: #447267; font-size: .78rem; font-weight: 700; }
+
+.viveiro-quick-actions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .85rem; margin-top: 1.7rem; }
+.viveiro-quick-actions a { display: grid; grid-template-columns: 35px 1fr; gap: .1rem .7rem; align-items: center; padding: 1rem; border: 1px solid #e7ece7; border-radius: 13px; background: #fff; color: #344a40; text-decoration: none; }
+.viveiro-quick-actions a:hover { border-color: #bfd2c5; }
+.viveiro-quick-actions a > span { grid-row: span 2; display: grid; width: 35px; height: 35px; place-items: center; border-radius: 10px; background: #eff5f0; color: #39725a; }
+.viveiro-quick-actions strong { font-size: .78rem; }
+.viveiro-quick-actions small { color: #829087; font-size: .68rem; }
+
+.viveiro-empty-state { display: grid; justify-items: center; gap: .65rem; padding: 3.5rem 1rem; border: 1px dashed #cddbd0; border-radius: 15px; background: rgba(255,255,255,.7); text-align: center; }
+.viveiro-empty-state h2 { margin: 0; color: #30493d; font-family: 'Fraunces', serif; font-size: 1.35rem; }
+.viveiro-empty-state p { max-width: 480px; margin: 0 0 .65rem; color: #7d8c83; line-height: 1.55; }
+.viveiro-empty-icon { display: grid; width: 48px; height: 48px; place-items: center; border-radius: 15px; background: #e9f4ed; color: #347e51; font-size: 1.5rem; }
+.viveiro-empty-icon.is-success { background: #e4f4e9; color: #33804a; }
+.viveiro-success { margin: 0 0 1rem; padding: .8rem 1rem; border: 1px solid #b8dfc3; border-radius: 10px; background: #eaf6ee; color: #28643c; }
+.viveiro-error { background: #fff0ef; }
+.viveiro-error ul { margin: .35rem 0 0; padding-left: 1.25rem; }
+.viveiro-error li { margin-top: .2rem; }
+
+.viveiro-status-legend { display: flex; flex-wrap: wrap; gap: 1.3rem; margin-bottom: 1rem; color: #75867d; font-size: .82rem; }
+.viveiro-status-legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.viveiro-status-legend i { width: 9px; height: 9px; border-radius: 50%; background: #54a16a; }
+.viveiro-status-legend i.status-atencao { background: #e6a837; }
+.viveiro-status-legend i.status-critico { background: #d85e51; }
+.viveiro-status-legend i.status-sem-leitura { background: #99a59f; }
+
+.viveiro-form-card, .viveiro-list-card { padding: 1.4rem; border: 1px solid #e6ece6; border-radius: 15px; background: #fff; box-shadow: 0 5px 18px rgba(27,57,44,.035); }
+.viveiro-form-section + .viveiro-form-section { margin-top: 1.8rem; padding-top: 1.5rem; border-top: 1px solid #edf0ed; }
+.viveiro-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+.viveiro-form-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.viveiro-form-field { display: grid; gap: .4rem; color: #4a5d53; font-size: .8rem; font-weight: 600; }
+.viveiro-form-field input, .viveiro-form-field select, .viveiro-form-field textarea { width: 100%; min-height: 43px; padding: .65rem .8rem; border: 1px solid #dfe7e1; border-radius: 9px; background: #fbfcfb; color: #31453b; font: 400 .88rem 'DM Sans', sans-serif; }
+.viveiro-form-field textarea { resize: vertical; }
+.viveiro-form-field input:focus, .viveiro-form-field select:focus, .viveiro-form-field textarea:focus { outline: 2px solid #9cc4ae; outline-offset: 1px; border-color: #6ea087; background: #fff; }
+.viveiro-form-field small { color: #b4493d; font-size: .75rem; font-weight: 500; }
+.viveiro-form-actions { display: flex; justify-content: flex-end; gap: .6rem; margin-top: 1.25rem; }
+.viveiro-two-column { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; gap: 1rem; }
+.viveiro-inline-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.viveiro-event { display: flex; gap: .8rem; padding: 1rem 0; border-bottom: 1px solid #edf0ed; }
+.viveiro-event:last-child { border-bottom: 0; }
+.viveiro-event-mark { flex: 0 0 35px; display: grid; width: 35px; height: 35px; place-items: center; border-radius: 10px; background: #edf5ef; color: #39765a; font-size: 1.15rem; }
+.viveiro-event-mark.is-critical { background: #fdebe8; color: #bd4d40; }
+.viveiro-event strong { color: #3e5148; font-size: .86rem; }
+.viveiro-event p { margin: .25rem 0 0; color: #859189; font-size: .78rem; }
+.viveiro-table-wrap { overflow-x: auto; border: 1px solid #e8ede8; border-radius: 12px; background: #fff; }
+.viveiro-table { width: 100%; border-collapse: collapse; text-align: left; }
+.viveiro-table th, .viveiro-table td { padding: .85rem 1rem; border-bottom: 1px solid #edf0ed; color: #53645a; font-size: .82rem; }
+.viveiro-table th { background: #f8faf8; color: #718078; font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.viveiro-table tr:last-child td { border-bottom: 0; }
+.viveiro-table-empty { padding: 1.3rem !important; color: #89968e !important; text-align: center; }
+
+.viveiro-detail-grid { display: grid; grid-template-columns: 1.5fr repeat(3, minmax(0, 1fr)); gap: .85rem; }
+.viveiro-temperature-panel { display: flex; min-height: 180px; flex-direction: column; justify-content: center; padding: 1.4rem; border-radius: 15px; background: #19493f; color: #fff; }
+.viveiro-temperature-panel p { margin: 0; color: #c6dbd0; font-size: .82rem; }
+.viveiro-temperature-panel strong { margin: .5rem 0; font-size: 3rem; font-weight: 600; }
+.viveiro-temperature-panel strong span { margin-left: .25rem; font-size: 1.2rem; }
+.viveiro-detail-card { display: flex; min-height: 180px; flex-direction: column; justify-content: center; }
+.viveiro-detail-card span { color: #849189; font-size: .8rem; }
+.viveiro-detail-card strong { margin-top: .6rem; color: #325245; font-size: 2rem; }
+.viveiro-detail-card small { margin-left: .25rem; font-size: .85rem; }
+.viveiro-detail-facts { display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 1rem 0 2rem; padding: 1.1rem 1.3rem; border: 1px solid #e7ece7; border-radius: 12px; background: #fff; }
+.viveiro-detail-facts span { display: grid; gap: .25rem; color: #718078; font-size: .83rem; }
+.viveiro-detail-facts strong { color: #3c574a; font-size: .72rem; text-transform: uppercase; }
+
+.viveiro-alert-list { display: grid; gap: .8rem; }
+.viveiro-alert-card { display: flex; align-items: center; gap: 1rem; padding: 1.2rem; border: 1px solid #f0dfb9; border-radius: 13px; background: #fffdf8; }
+.viveiro-alert-card.status-critico { border-color: #f2c9c3; background: #fff9f8; }
+.viveiro-alert-icon { display: grid; flex: 0 0 42px; width: 42px; height: 42px; place-items: center; border-radius: 50%; background: #fff0cf; color: #a57315; font-weight: 700; }
+.viveiro-alert-card.status-critico .viveiro-alert-icon { background: #fde7e3; color: #b84639; }
+.viveiro-alert-card h2 { margin: .35rem 0 .2rem; color: #384d42; font-size: 1rem; }
+.viveiro-alert-card p { margin: 0; color: #7c8981; font-size: .84rem; }
+.viveiro-alert-card .viveiro-button { margin-left: auto; }
+.viveiro-report-grid { display: grid; gap: 1rem; }
+
+@media (max-width: 1200px) {
+  .viveiro-tank-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .viveiro-quick-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .viveiro-form-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 760px) {
+  .viveiro-sidebar { position: static; width: auto; padding: 1rem; }
+  .viveiro-sidebar-brand { margin: 0 0 .7rem; }
+  .viveiro-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .viveiro-nav-label, .viveiro-sidebar-footer { display: none; }
+  .viveiro-nav a { min-height: 40px; justify-content: center; gap: .35rem; padding: .45rem; font-size: .72rem; }
+  .viveiro-nav a span { width: auto; }
+  .viveiro-main { margin-left: 0; }
+  .viveiro-topbar { min-height: 65px; padding: .75rem 1rem; }
+  .viveiro-search { display: none; }
+  .viveiro-profile-link { font-size: .75rem; }
+  .viveiro-page-heading { align-items: flex-start; padding: 1.4rem 1rem .9rem; }
+  .viveiro-content { padding: .5rem 1rem 2rem; }
+  .viveiro-stat-grid { gap: .55rem; }
+  .viveiro-stat-card { min-height: 112px; padding: .8rem; }
+  .viveiro-stat-card p { max-width: 80px; font-size: .72rem; }
+  .viveiro-stat-card strong { font-size: 1.6rem; }
+  .viveiro-stat-icon { top: .65rem; right: .65rem; width: 30px; height: 30px; }
+  .viveiro-tank-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; }
+  .viveiro-tank-card { padding: .85rem; }
+  .viveiro-tank-card-top { align-items: flex-start; flex-direction: column; }
+  .viveiro-temperature { font-size: 1.8rem; }
+  .viveiro-quick-actions { grid-template-columns: 1fr 1fr; gap: .55rem; }
+  .viveiro-quick-actions a { grid-template-columns: 1fr; gap: .35rem; padding: .8rem; }
+  .viveiro-quick-actions a > span { grid-row: auto; }
+  .viveiro-quick-actions small { display: none; }
+  .viveiro-section-heading { align-items: flex-start; flex-direction: column; }
+  .viveiro-form-grid, .viveiro-form-grid-3, .viveiro-two-column { grid-template-columns: 1fr; }
+  .viveiro-detail-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .viveiro-temperature-panel { grid-column: 1 / -1; }
+  .viveiro-alert-card { align-items: flex-start; flex-wrap: wrap; }
+  .viveiro-alert-card .viveiro-button { margin-left: 3.5rem; }
 }

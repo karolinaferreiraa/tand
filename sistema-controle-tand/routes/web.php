@@ -1,71 +1,34 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AlertaController;
+use App\Http\Controllers\AlimentacaoController;
+use App\Http\Controllers\MortalidadeController;
+use App\Http\Controllers\RelatorioController;
+use App\Http\Controllers\TanqueController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Sensor;
 use Illuminate\Support\Facades\DB;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/dashboard', function () {
-
-    $sensor = Sensor::whereHas('tanque', function ($query) {
-        $query->where('id_usuario', auth()->id());
-    })->orderBy('id_sensores')->first();
-
-    $leituras = $sensor
-        ? DB::table('leituras_temperatura')
-            ->where('id_sensores', $sensor->id_sensores)
-            ->orderByDesc('id')
-            ->limit(10)
-            ->get()
-        : collect();
-
-    return view('dashboard', compact('sensor', 'leituras'));
-
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-
-Route::get('/dashboard/dados', function () {
-
-    $sensor = Sensor::whereHas('tanque', function ($query) {
-        $query->where('id_usuario', auth()->id());
-    })->orderBy('id_sensores')->first();
-
-    if (!$sensor) {
-        return response()->json([
-            'sensor' => null,
-            'leituras' => [],
-        ]);
-    }
-
-    $leituras = DB::table('leituras_temperatura')
-        ->where('id_sensores', $sensor->id_sensores)
-        ->orderByDesc('id')
-        ->limit(10)
-        ->get();
-
-    return response()->json([
-        'sensor' => [
-            'id' => $sensor->id_sensores,
-            'temperatura' => $sensor->temperatura_real,
-        ],
-        'leituras' => $leituras,
-    ]);
-
-})->middleware(['auth', 'verified'])->name('dashboard.dados');
-
+Route::view('/', 'welcome')->name('home');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/dashboard/dados', [DashboardController::class, 'dados'])->name('dashboard.dados');
+    Route::get('/tanques', [TanqueController::class, 'index'])->name('tanques.index');
+    Route::get('/tanques/novo', [TanqueController::class, 'create'])->name('tanques.create');
+    Route::post('/tanques', [TanqueController::class, 'store'])->name('tanques.store');
+    Route::get('/tanques/{id}', [TanqueController::class, 'show'])->whereNumber('id')->name('tanques.show');
+    Route::get('/alimentacoes', [AlimentacaoController::class, 'index'])->name('alimentacoes.index');
+    Route::post('/alimentacoes', [AlimentacaoController::class, 'store'])->name('alimentacoes.store');
+    Route::get('/mortalidade', [MortalidadeController::class, 'index'])->name('mortalidades.index');
+    Route::post('/mortalidade', [MortalidadeController::class, 'store'])->name('mortalidades.store');
+    Route::get('/alertas', AlertaController::class)->name('alertas.index');
+    Route::get('/relatorios', RelatorioController::class)->name('relatorios.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
 
 require __DIR__.'/auth.php';

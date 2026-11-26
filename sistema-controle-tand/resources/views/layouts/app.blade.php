@@ -5,32 +5,43 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Viveiro') }}</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
 
-        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+    <body class="viveiro-app-body">
+        <div class="viveiro-app">
             @include('layouts.navigation')
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div class="viveiro-main">
+                <header class="viveiro-topbar">
+                    <div>
+                        <p class="viveiro-topbar-kicker">MONITORAMENTO DE TANQUES</p>
+                        <p class="viveiro-topbar-user">Olá, {{ auth()->user()->name }}</p>
+                    </div>
+                    <form class="viveiro-search" action="{{ route('tanques.index') }}" method="GET">
+                        <label class="sr-only" for="busca-tanque">Buscar tanque</label>
+                        <input id="busca-tanque" type="search" name="busca" placeholder="Buscar tanque...">
+                        <button type="submit" aria-label="Buscar">⌕</button>
+                    </form>
+                    <a class="viveiro-profile-link" href="{{ route('profile.edit') }}">
+                        {{ auth()->user()->name }}
+                    </a>
+                </header>
+
+                @isset($header)
+                    <div class="viveiro-page-heading">
                         {{ $header }}
                     </div>
-                </header>
-            @endisset
+                @endisset
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+                <main class="viveiro-content">
+                    {{ $slot }}
+                </main>
+            </div>
         </div>
     </body>
 </html>

@@ -17,7 +17,20 @@ class Tanque extends Model
         'id_usuario',
         'tipo',
         'datatanque_registrada',
+        'nome',
+        'dimensoes',
+        'quantidade_alevinos',
+        'especie',
+        'volume_estimado',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'datatanque_registrada' => 'date',
+            'volume_estimado' => 'decimal:2',
+        ];
+    }
 
     public function usuario()
     {
@@ -32,5 +45,15 @@ class Tanque extends Model
     public function peixes()
     {
         return $this->hasMany(Peixe::class, 'id_tanque', 'id_tanque');
+    }
+
+    public function alimentacoes()
+    {
+        return $this->hasMany(Alimentacao::class, 'id_tanque', 'id_tanque');
+    }
+
+    public function mortalidades()
+    {
+        return $this->hasMany(Mortalidade::class, 'id_tanque', 'id_tanque');
     }
 }

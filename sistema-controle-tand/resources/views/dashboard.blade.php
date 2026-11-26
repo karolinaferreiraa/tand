@@ -1,154 +1,143 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
+        <div>
+            <p class="viveiro-eyebrow">VISÃO GERAL</p>
+            <h1 class="viveiro-heading">Painel de monitoramento</h1>
+            <p class="viveiro-subheading">Acompanhe a saúde dos seus tanques em tempo real.</p>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+    <section class="viveiro-stat-grid" aria-label="Resumo dos tanques">
+        <article class="viveiro-stat-card">
+            <span class="viveiro-stat-icon">◉</span>
+            <p>Tanques normais</p>
+            <strong>{{ str_pad($contagens['normal'], 2, '0', STR_PAD_LEFT) }}</strong>
+        </article>
+        <article class="viveiro-stat-card is-warning">
+            <span class="viveiro-stat-icon">⌁</span>
+            <p>Em atenção</p>
+            <strong>{{ str_pad($contagens['atencao'], 2, '0', STR_PAD_LEFT) }}</strong>
+        </article>
+        <article class="viveiro-stat-card is-critical">
+            <span class="viveiro-stat-icon">!</span>
+            <p>Críticos</p>
+            <strong>{{ str_pad($contagens['critico'], 2, '0', STR_PAD_LEFT) }}</strong>
+        </article>
+    </section>
 
-                    @if ($sensor)
-                        <h3 class="text-lg font-semibold mb-4">
-                            Temperatura atual
-                        </h3>
-
-                        @if ($sensor->temperatura_real !== null)
-                            <p id="temperatura-atual" class="text-4xl font-bold">
-                                {{ number_format($sensor->temperatura_real, 2, ',', '.') }} °C
-                            </p>
-                        @else
-                            <p>Nenhuma temperatura registrada ainda.</p>
-                        @endif
-
-                        <p class="text-sm text-gray-500 mt-2">
-                            Sensor #{{ $sensor->id_sensores }}
-                        </p>
-
-                        @if ($leituras->isNotEmpty())
-                            <p id="ultima-leitura" class="text-sm text-gray-500 mt-2">
-                                Última leitura:
-                                {{ \Carbon\Carbon::parse($leituras->first()->created_at)->format('d/m/Y H:i:s') }}
-                            </p>
-                        @endif
-
-                        <h3 class="text-lg font-semibold mt-8 mb-4">
-                            Histórico de temperaturas
-                        </h3>
-
-                        @if ($leituras->isNotEmpty())
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full text-left">
-                                    <thead>
-                                        <tr class="border-b">
-                                            <th class="py-2">Temperatura</th>
-                                            <th class="py-2">Data e horário</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody id="historico-leituras">
-                                        @foreach ($leituras as $leitura)
-                                            <tr class="border-b">
-                                                <td class="py-2">
-                                                    {{ number_format($leitura->temperatura, 2, ',', '.') }} °C
-                                                </td>
-                                                <td class="py-2">
-                                                    {{ \Carbon\Carbon::parse($leitura->created_at)->format('d/m/Y H:i:s') }}
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        @else
-                            <p>Nenhuma leitura registrada ainda.</p>
-                        @endif
-                    @else
-                        <p>Nenhum sensor encontrado para sua conta.</p>
-                    @endif
-
-                </div>
-            </div>
+    <div class="viveiro-section-heading">
+        <div>
+            <h2>Seus tanques</h2>
+            <p>Temperatura e situação atual de cada viveiro.</p>
         </div>
+        <a class="viveiro-button viveiro-button-primary" href="{{ route('tanques.create') }}">+ Cadastrar novo tanque</a>
     </div>
+
+    @if (session('status'))
+        <p class="viveiro-success" role="status">{{ session('status') }}</p>
+    @endif
+
+    @if ($tanques->isNotEmpty())
+        <section class="viveiro-tank-grid" aria-label="Tanques cadastrados">
+            @foreach ($tanques as $tanque)
+                @php($sensor = $tanque->sensores->first())
+                @php($status = $sensor?->statusTemperatura() ?? 'sem-leitura')
+                <a class="viveiro-tank-card status-{{ $status }}" data-tanque="{{ $tanque->id_tanque }}" href="{{ route('tanques.show', $tanque->id_tanque) }}">
+                    <div class="viveiro-tank-card-top">
+                        <span class="viveiro-tank-name">{{ $tanque->nome ?: 'Tanque '.$loop->iteration }}</span>
+                        <span class="viveiro-status status-{{ $status }}" data-status>
+                            {{ ['normal' => 'Normal', 'atencao' => 'Atenção', 'critico' => 'Crítico', 'sem-leitura' => 'Sem leitura'][$status] }}
+                        </span>
+                    </div>
+                    <p class="viveiro-temperature" data-temperatura>
+                        {{ $sensor?->temperatura_real !== null ? number_format($sensor->temperatura_real, 1, ',', '.') : '—' }}<span>°C</span>
+                    </p>
+                    <p class="viveiro-tank-meta" data-atualizado>
+                        @if ($tanque->especie)
+                            {{ $tanque->especie }} ·
+                        @endif
+                        @if ($sensor?->temperatura_real !== null)
+                            Atualizado {{ $sensor->updated_at?->diffForHumans() ?? 'agora' }}
+                        @else
+                            Aguardando primeira leitura
+                        @endif
+                    </p>
+                    <span class="viveiro-card-link">Ver detalhes <span aria-hidden="true">→</span></span>
+                </a>
+            @endforeach
+        </section>
+    @else
+        <div class="viveiro-empty-state">
+            <span class="viveiro-empty-icon">◉</span>
+            <h2>Nenhum tanque cadastrado</h2>
+            <p>Cadastre seu primeiro tanque para acompanhar a temperatura e os alertas por aqui.</p>
+            <a class="viveiro-button viveiro-button-primary" href="{{ route('tanques.create') }}">Cadastrar tanque</a>
+        </div>
+    @endif
+
+    <section class="viveiro-quick-actions" aria-label="Ações rápidas">
+        <a href="{{ route('alertas.index') }}"><span>⚠</span><strong>Verificar alertas</strong><small>Confira tanques que precisam de atenção</small></a>
+        <a href="{{ route('alimentacoes.index') }}"><span>⌁</span><strong>Registrar arraçoamento</strong><small>Salve a alimentação do dia</small></a>
+        <a href="{{ route('mortalidades.index') }}"><span>＋</span><strong>Registrar mortalidade</strong><small>Mantenha os registros atualizados</small></a>
+        <a href="{{ route('relatorios.index') }}"><span>▤</span><strong>Ver relatórios</strong><small>Acompanhe os registros recentes</small></a>
+    </section>
+
     <script>
-        async function atualizarTemperatura() {
+        const statusLabels = {
+            normal: 'Normal',
+            atencao: 'Atenção',
+            critico: 'Crítico',
+            'sem-leitura': 'Sem leitura'
+        };
+
+        async function atualizarPainel() {
             try {
-                const resposta = await fetch("{{ route('dashboard.dados') }}");
+                const resposta = await fetch(@json(route('dashboard.dados')), {
+                    headers: { Accept: 'application/json' }
+                });
 
                 if (!resposta.ok) {
-                    throw new Error('Erro ao consultar as temperaturas.');
+                    throw new Error('Não foi possível atualizar as leituras dos tanques.');
                 }
 
-                const dados = await resposta.json();
+                const { tanques } = await resposta.json();
+                const totais = { normal: 0, atencao: 0, critico: 0 };
 
-                if (!dados.sensor) {
-                    return;
-                }
+                tanques.forEach(tanque => {
+                    if (totais[tanque.status] !== undefined) totais[tanque.status]++;
 
-                const elemento = document.getElementById('temperatura-atual');
+                    const cartao = document.querySelector(`[data-tanque="${tanque.id}"]`);
+                    if (!cartao) return;
 
-                if (elemento) {
-                    const temperatura = Number(dados.sensor.temperatura);
+                    const temperatura = cartao.querySelector('[data-temperatura]');
+                    temperatura.replaceChildren();
+                    temperatura.append(
+                        document.createTextNode(tanque.temperatura === null
+                            ? '—'
+                            : Number(tanque.temperatura).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }))
+                    );
+                    const unidade = document.createElement('span');
+                    unidade.textContent = '°C';
+                    temperatura.append(unidade);
 
-                    elemento.textContent = temperatura.toLocaleString('pt-BR', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }) + ' °C';
-                }
-                const ultimaLeitura = dados.leituras[0];
-                const elementoHorario = document.getElementById('ultima-leitura');
+                    const status = cartao.querySelector('[data-status]');
+                    status.className = `viveiro-status status-${tanque.status}`;
+                    status.textContent = statusLabels[tanque.status];
+                    cartao.className = `viveiro-tank-card status-${tanque.status}`;
+                    cartao.querySelector('[data-atualizado]').textContent = tanque.temperatura === null
+                        ? 'Aguardando primeira leitura'
+                        : `Atualizado ${tanque.atualizado_em}`;
+                });
 
-                if (ultimaLeitura && elementoHorario) {
-                    const [data, hora] = ultimaLeitura.created_at.split(' ');
-                    const [ano, mes, dia] = data.split('-');
-
-                    elementoHorario.textContent =
-                        `Última leitura: ${dia}/${mes}/${ano} ${hora}`;
-                }
-
-                const corpoHistorico = document.getElementById('historico-leituras');
-
-                if (corpoHistorico) {
-                    corpoHistorico.replaceChildren();
-
-                    dados.leituras.forEach(leitura => {
-                        const linha = document.createElement('tr');
-                        linha.className = 'border-b';
-
-                        const colunaTemperatura = document.createElement('td');
-                        colunaTemperatura.className = 'py-2';
-
-                        const temperatura = Number(leitura.temperatura);
-
-                        colunaTemperatura.textContent = temperatura.toLocaleString('pt-BR', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        }) + ' °C';
-
-                        const colunaHorario = document.createElement('td');
-                        colunaHorario.className = 'py-2';
-
-                        const [data, hora] = leitura.created_at.replace('T', ' ').split(' ');
-                        const [ano, mes, dia] = data.split('-');
-
-                        colunaHorario.textContent =
-                            `${dia}/${mes}/${ano} ${hora.slice(0, 8)}`;
-
-                        linha.appendChild(colunaTemperatura);
-                        linha.appendChild(colunaHorario);
-
-                        corpoHistorico.appendChild(linha);
-                    });
-                }
-
+                document.querySelectorAll('.viveiro-stat-card strong').forEach((elemento, indice) => {
+                    const estado = ['normal', 'atencao', 'critico'][indice];
+                    elemento.textContent = String(totais[estado] ?? 0).padStart(2, '0');
+                });
             } catch (erro) {
-                console.error('Erro ao atualizar o dashboard:', erro);
+                console.error('Erro ao atualizar o painel:', erro);
             }
         }
 
-        setInterval(atualizarTemperatura, 5000);
+        window.setInterval(atualizarPainel, 5000);
     </script>
 </x-app-layout>
